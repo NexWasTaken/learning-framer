@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "motion/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const containerVariants = {
   hidden: {
@@ -17,6 +17,10 @@ const containerVariants = {
       staggerChildren: 0.4,
     },
   },
+  exit: {
+    x: "-100vw",
+    transition: { ease: "easeInOut" },
+  },
 };
 
 const childVariants = {
@@ -26,13 +30,15 @@ const childVariants = {
 
 type Props = {
   pizza: { base: string; toppings: string[] };
+  setShowModal: any;
 };
 
-const Order = ({ pizza }: Props) => {
-  const [showTitle, setShowTitle] = useState(true);
-  setTimeout(() => {
-    setShowTitle(false);
-  }, 4000);
+const Order = ({ pizza, setShowModal }: Props) => {
+  useEffect(() => {
+    setTimeout(() => {
+      setShowModal(true);
+    }, 5000);
+  }, [setShowModal]);
 
   return (
     <motion.div
@@ -40,14 +46,9 @@ const Order = ({ pizza }: Props) => {
       variants={containerVariants}
       initial="hidden"
       animate="visible"
+      exit="exit"
     >
-      <AnimatePresence>
-        {showTitle && (
-          <motion.h2 exit={{ y: "-1000px" }}>
-            Thank you for your order :)
-          </motion.h2>
-        )}
-      </AnimatePresence>
+      <h2>Thank you for your order :)</h2>
       <motion.p variants={childVariants}>
         You ordered a {pizza.base} pizza with:
       </motion.p>
