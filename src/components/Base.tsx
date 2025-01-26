@@ -1,6 +1,47 @@
 import { motion } from "motion/react";
 import { Link } from "react-router";
 
+const containerVariants = {
+  hidden: {
+    opacity: 0,
+    x: "100vw",
+  },
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: {
+      type: "spring",
+      delay: 0.5,
+    },
+  },
+};
+
+const nextVariants = {
+  initial: {
+    x: "-100vw",
+  },
+  animate: {
+    x: 0,
+    transition: {
+      type: "spring",
+      stiffness: 85,
+    },
+  },
+};
+
+const buttonVariants = {
+  hover: {
+    scale: 1.1,
+    textShadow: "0px 0px 8px rgb(255, 255, 255)",
+    boxShadow: "0px 0px 8px rgb(255, 255, 255 / 0.2)",
+    transition: {
+      duration: 0.3,
+      repeatType: "mirror",
+      repeat: Infinity,
+    },
+  },
+};
+
 type Props = {
   addBase: (base: string) => void;
   pizza: { base: string; toppings: string[] };
@@ -12,9 +53,9 @@ const Base = ({ addBase, pizza }: Props) => {
   return (
     <motion.div
       className="base container"
-      initial={{ x: "100vw" }}
-      animate={{ x: 0 }}
-      transition={{ type: "spring" }}
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
     >
       <h3>Step 1: Choose Your Base</h3>
       <ul>
@@ -31,25 +72,12 @@ const Base = ({ addBase, pizza }: Props) => {
       {pizza.base && (
         <motion.div
           className="next"
-          initial={{
-            x: "-100vw",
-          }}
-          animate={{
-            x: 0,
-          }}
-          transition={{
-            type: "spring",
-            stiffness: 110,
-          }}
+          variants={nextVariants}
+          initial="initial"
+          animate="animate"
         >
           <Link to="/toppings">
-            <motion.button
-              whileHover={{
-                scale: 1.42,
-                textShadow: "0px 0px 8px rgb(255, 255, 255)",
-                boxShadow: "0px 0px 8px rgb(255, 255, 255 / 0.2)",
-              }}
-            >
+            <motion.button variants={buttonVariants} whileHover="hover">
               Next
             </motion.button>
           </Link>
